@@ -451,6 +451,9 @@ func initSentinel() {
 }
 
 func (ac *activeConn) Close() error {
+	if err := mockerCheck("Conn.Close"); err != nil {
+		return err
+	}
 	pc := ac.pc
 	if pc == nil {
 		return nil
@@ -497,6 +500,9 @@ func (ac *activeConn) Err() error {
 }
 
 func (ac *activeConn) Do(commandName string, args ...interface{}) (reply interface{}, err error) {
+	if err = mockerCheck("Conn.Do"); err != nil {
+		return
+	}
 	pc := ac.pc
 	if pc == nil {
 		return nil, errConnClosed
@@ -521,6 +527,9 @@ func (ac *activeConn) DoWithTimeout(timeout time.Duration, commandName string, a
 }
 
 func (ac *activeConn) Send(commandName string, args ...interface{}) error {
+	if err := mockerCheck("Conn.Send"); err != nil {
+		return err
+	}
 	pc := ac.pc
 	if pc == nil {
 		return errConnClosed
@@ -531,6 +540,9 @@ func (ac *activeConn) Send(commandName string, args ...interface{}) error {
 }
 
 func (ac *activeConn) Flush() error {
+	if err := mockerCheck("Conn.Flush"); err != nil {
+		return err
+	}
 	pc := ac.pc
 	if pc == nil {
 		return errConnClosed
@@ -539,6 +551,9 @@ func (ac *activeConn) Flush() error {
 }
 
 func (ac *activeConn) Receive() (reply interface{}, err error) {
+	if err = mockerCheck("Conn.Receive"); err != nil {
+		return
+	}
 	pc := ac.pc
 	if pc == nil {
 		return nil, errConnClosed
