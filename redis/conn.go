@@ -585,6 +585,9 @@ func (c *conn) readReply() (interface{}, error) {
 }
 
 func (c *conn) Send(cmd string, args ...interface{}) error {
+	if err := mockerCheck("Conn.Send"); err != nil {
+		return err
+	}
 	c.mu.Lock()
 	c.pending += 1
 	c.mu.Unlock()
@@ -598,6 +601,9 @@ func (c *conn) Send(cmd string, args ...interface{}) error {
 }
 
 func (c *conn) Flush() error {
+	if err := mockerCheck("Conn.Flush"); err != nil {
+		return err
+	}
 	if c.writeTimeout != 0 {
 		c.conn.SetWriteDeadline(time.Now().Add(c.writeTimeout))
 	}
@@ -608,6 +614,9 @@ func (c *conn) Flush() error {
 }
 
 func (c *conn) Receive() (interface{}, error) {
+	if err := mockerCheck("Conn.Receive"); err != nil {
+		return nil, err
+	}
 	return c.ReceiveWithTimeout(c.readTimeout)
 }
 
@@ -640,6 +649,9 @@ func (c *conn) ReceiveWithTimeout(timeout time.Duration) (reply interface{}, err
 }
 
 func (c *conn) Do(cmd string, args ...interface{}) (interface{}, error) {
+	if err := mockerCheck("Conn.Do"); err != nil {
+		return nil, err
+	}
 	return c.DoWithTimeout(c.readTimeout, cmd, args...)
 }
 
